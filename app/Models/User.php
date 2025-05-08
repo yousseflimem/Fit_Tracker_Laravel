@@ -17,21 +17,27 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $primaryKey = 'userid';
+    public $incrementing = true;
+
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'username', 'admin', 'passwordHash', 'role', 'createdAt'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public function membership()
+    {
+        return $this->hasOne(Membership::class, 'userid', 'userid');
+    }
+
+    public function purchasedProducts()
+    {
+        return $this->belongsToMany(GymProduct::class, 'gym_product_user', 'userid', 'productId');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'userid', 'userid');
+    }
 
     /**
      * Get the attributes that should be cast.
