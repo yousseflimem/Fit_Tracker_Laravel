@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('gym_products', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // Custom primary key
             $table->string('name');
-            $table->double('price');
             $table->text('description');
+            $table->decimal('price', 8, 2);
+            $table->string('category');
+            $table->integer('stock');
             $table->timestamps();
         });
     }
@@ -28,3 +30,4 @@ return new class extends Migration
         Schema::dropIfExists('gym_products');
     }
 };
+?>

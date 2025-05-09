@@ -1,27 +1,33 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Factories;
 
 use App\Models\User;
-use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
-class UserSeeder extends Seeder
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ */
+class UserFactory extends Factory
 {
-    public function run(): void
+    protected $model = User::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
     {
-        // Create regular users
-        User::factory()->count(5)->create([
-            'role' => 'User',
-            'admin' => false
-        ]);
-        
-        // Create admin user
-        User::factory()->create([
-            'role' => 'Admin',
-            'admin' => true
-        ]);
-        
-        $this->command->info('Users seeded successfully!');
+        return [
+            'name' => fake()->userName(),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => Hash::make('password'),
+            'role' => fake()->randomElement(['admin', 'user']), // Random role
+            'created_at' => now(),
+        ];
     }
 }
+?>

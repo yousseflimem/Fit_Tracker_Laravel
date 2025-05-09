@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Models\GymProduct; // Ensure this model exists
 return new class extends Migration
 {
     /**
@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('color');
             $table->enum('gender', ['Men', 'Women', 'Unisex']);  // Fixed "Unless" to "Unisex"
             $table->string('material');  // Note: Fixed UML typo "Capaule"
+            $table->timestamps(); // Add if missing
+
         });
     }
 

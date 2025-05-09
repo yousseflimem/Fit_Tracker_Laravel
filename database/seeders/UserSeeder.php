@@ -1,39 +1,33 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class UserFactory extends Factory
+class UserSeeder extends Seeder
 {
-    protected $model = User::class;
-
-    public function definition(): array
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        return [
-            'username' => $this->faker->unique()->userName,
-            'passwordHash' => Hash::make('password'),
-            'role' => $this->faker->randomElement(['Admin', 'User']),
-            'admin' => $this->faker->boolean,
-            'createdAt' => now(),
-        ];
-    }
+        // Create regular users (password will be 'password' from factory)
+        User::factory()
+            ->count(10)
+            ->create();
 
-    public function admin(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'role' => 'Admin',
-            'admin' => true,
-        ];
-    }
+        // Create specific admin users
+        User::factory()
+            ->create([
+                'name' => 'Admin User',
+                'email' => 'admin@example.com',
+                'password' => Hash::make('admin123'), // Stronger password for admin
+                'role' => 'admin'
+            ]);
 
-    public function regular(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'role' => 'User',
-            'admin' => false,
-        ]);
+        $this->command->info('Successfully seeded users (10 regular + 1 admin)');
     }
 }
+?>

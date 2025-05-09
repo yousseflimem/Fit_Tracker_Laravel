@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory; // Add this
 
 class GymProduct extends Model
 {
-    protected $primaryKey = 'productId';
-    public $incrementing = true;
-    protected $fillable = [
-        'productId', 'name', 'description', 'price', 'category', 'stock'
-    ]; 
+    use HasFactory; // Add this
+     protected $fillable = [
+        'id', 'name', 'description', 'price', 'category', 'stock'
+    ];
     
     public function supplement()
     {

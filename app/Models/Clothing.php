@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Clothing extends Model
 {
-    protected $primaryKey = 'productId';
+    use HasFactory;
     public $incrementing = true;
     protected $fillable = [
-        'productId', 'size', 'color', 'gender', 'material'
+        'id', 'size', 'color', 'gender', 'material'
     ];
     public function product()
     {
