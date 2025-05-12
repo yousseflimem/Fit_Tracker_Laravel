@@ -19,6 +19,23 @@
     Route::post('/logout', [LogoutController::class, 'logout']);
     Route::post('/lookForProduct', [UserController::class, 'lookForProduct']);
 
+
+     Route::prefix('admin')->group(function () {
+    // User Management
+    Route::get('/users', [AdminController::class, 'listUsers']);
+    Route::put('/users/{id}', [AdminController::class, 'updateUser']);
+    Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
+    
+    // Product Management
+    Route::post('/products', [AdminController::class, 'createProduct']);
+    Route::put('/products/{id}', [AdminController::class, 'updateProduct']);
+    Route::delete('/products/{id}', [AdminController::class, 'deleteProduct']);
+    // Route::get('/products/stats', [AdminController::class, 'productStatistics']);
+    // Route::get('/users/count', [AdminController::class, 'countUsers']);
+    Route::get('/products/all', [AdminController::class, 'listAllProducts']);
+    Route::put('/purchases/{purchaseId}', [AdminController::class, 'modifyPurchase']);
+    });
+
     Route::apiResource('users', UserController::class);
  
     Route::apiResource('GymProduct', GymProductController::class);
