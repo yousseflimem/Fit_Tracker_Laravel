@@ -1119,6 +1119,256 @@
 						"header": []
 					},
 					"response": []
+				},
+				{
+					"name": "update_user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"User\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/users/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"User\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/users/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User_count",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"User\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/users/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin_product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Yoga Mat\",\r\n    \"description\": \"Non-slip surface\",\r\n    \"price\": 39.99,\r\n    \"stock\": 30,\r\n    \"category\": \"accessory\",\r\n    \"accessory_size\": \"68x24 inches\",\r\n    \"material\": \"Rubber\",\r\n    \"brand\": \"GymPro\",\r\n    \"accessory_weight\": 1.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin_updateProduct",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Yoga Mat\",\r\n    \"description\": \"Non-slip surface\",\r\n    \"price\": 39.99,\r\n    \"stock\": 30,\r\n    \"category\": \"accessory\",\r\n    \"accessory_size\": \"68x24 inches\",\r\n    \"material\": \"Rubber\",\r\n    \"brand\": \"GymPro\",\r\n    \"accessory_weight\": 1.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/products/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin_getAllProduct",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Yoga Mat\",\r\n    \"description\": \"Non-slip surface\",\r\n    \"price\": 39.99,\r\n    \"stock\": 30,\r\n    \"category\": \"accessory\",\r\n    \"accessory_size\": \"68x24 inches\",\r\n    \"material\": \"Rubber\",\r\n    \"brand\": \"GymPro\",\r\n    \"accessory_weight\": 1.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/products/stats",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"products",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin_deleteProduct",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Yoga Mat\",\r\n    \"description\": \"Non-slip surface\",\r\n    \"price\": 39.99,\r\n    \"stock\": 30,\r\n    \"category\": \"accessory\",\r\n    \"accessory_size\": \"68x24 inches\",\r\n    \"material\": \"Rubber\",\r\n    \"brand\": \"GymPro\",\r\n    \"accessory_weight\": 1.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/products/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"products",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin_ModiferProduct",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Yoga Mat\",\r\n    \"description\": \"Non-slip surface\",\r\n    \"price\": 39.99,\r\n    \"stock\": 30,\r\n    \"category\": \"accessory\",\r\n    \"accessory_size\": \"68x24 inches\",\r\n    \"material\": \"Rubber\",\r\n    \"brand\": \"GymPro\",\r\n    \"accessory_weight\": 1.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/purchases/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"purchases",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
