@@ -12,12 +12,12 @@
     use App\Http\Controllers\Auth\RegisterController;
     use App\Http\Controllers\Auth\LogoutController;
     use App\Http\Controllers\Api\ReviewController;
-
+    use App\Http\Controllers\Api\AdminController;
    
     Route::post('/login', LoginController::class); // Added login route
     Route::post('/register', RegisterController::class); // Added registration route
     Route::post('/logout', [LogoutController::class, 'logout']);
-    Route::post('/purchaseProduct/{membershipId}', [UserController::class, 'purchaseProduct']);
+    Route::post('/lookForProduct', [UserController::class, 'lookForProduct']);
 
     Route::apiResource('users', UserController::class);
  
@@ -33,8 +33,7 @@
 
     Route::apiResource('accessories', AccessoryController::class); // Added route for accessories
 
-    Route::middleware('auth:sanctum')->apiResource('reviews', ReviewController::class);
-
+    Route::apiResource('reviews', ReviewController::class); // Added route for reviews    
 
 
 

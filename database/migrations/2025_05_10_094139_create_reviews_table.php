@@ -15,14 +15,13 @@ return new class extends Migration
             $table->id();  // Matches UML's reviewId: int
             
             // Fixed user relationship (matches users.userid)
-            $table->foreignId('userid')->constrained('users') ->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users') ->onDelete('cascade');
             // Fixed product relationship (matches gym_products.productId)
-            $table->foreignId('productId')->constrained('gym_products')  ->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('gym_products')  ->onDelete('cascade');
             
             $table->integer('rating');
             $table->text('comment');
-               $table->dateTime('createdAt');  
-            $table->dateTime('updatedAt');
+   
             $table->timestamps(); 
         });
     }

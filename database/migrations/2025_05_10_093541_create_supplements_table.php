@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('flavor');
             $table->double('weight');
             $table->enum('form', ['Powder', 'Capsule', 'Liquid']);
+              $table->timestamps();
         });
     }
 

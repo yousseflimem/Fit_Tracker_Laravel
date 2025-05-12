@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('product_purchases', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('userid')->constrained('users');
-            $table->foreignId('productid')->constrained('gym_products');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');  // Corrected foreign key column name
+            $table->foreignId('product_id')->constrained('gym_products')->onDelete('cascade');  // Corrected foreign key column name
             $table->integer('quantity');
             $table->decimal('price_at_purchase', 8, 2);
-            $table->date('purchase_date');
+            $table->timestamp('purchase_date');
             $table->timestamps();
         });
     }

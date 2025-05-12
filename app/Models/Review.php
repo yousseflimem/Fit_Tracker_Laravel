@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     // Define custom timestamps
-    const UPDATED_AT = 'updatedAt';
-    const CREATED_AT = 'createdAt';
 
     // Disable automatic timestamps if you're using custom ones
     public $timestamps = true;
@@ -22,7 +20,7 @@ class Review extends Model
     public function user()
     {
         // Define the foreign key in the 'reviews' table (userid) and the local key in 'users' table (id)
-        return $this->belongsTo(User::class, 'userid', 'id');
+        return $this->belongsTo(User::class, 'userid');
     }
 
     // Relationship to GymProduct

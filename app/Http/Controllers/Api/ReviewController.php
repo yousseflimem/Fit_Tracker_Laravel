@@ -1,17 +1,16 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\Review;
 use App\Models\GymProduct;
+use App\Models\User;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
     /**
-     * Get all reviews, with optional filtering by product_id.
+     * Get all reviews, optionally filtered by product_id.
      */
     public function index(Request $request)
     {
@@ -33,23 +32,38 @@ class ReviewController extends Controller
      * Store a new review.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'product_id' => 'required|exists:gym_products,id',
-            'rating'     => 'required|integer|min:1|max:5',
-            'comment'    => 'nullable|string|max:255',
-        ]);
+{
+    $token = $request->bearerToken();
+    $accessToken = \Laravel\Sanctum\PersonalAccessToken::findToken($token);
+    $user = $accessToken && $accessToken->tokenable instanceof User
+        ? $accessToken->tokenable
+        : null;
 
-        $review = new Review();
-        $review->user_id = Auth::id();
-        $review->product_id = $request->input('product_id');
-        $review->rating = $request->input('rating');
-        $review->comment = $request->input('comment');
-        $review->save();    
+    if (!$user) {
+        return response()->json(['error' => 'User not authenticated'], 401);
     }
 
+    $request->validate([
+        'product_id' => 'required|exists:gym_products,id',
+        'rating'     => 'required|integer|min:1|max:5',
+        'comment'    => 'nullable|string|max:255',
+    ]);
+
+    $review = new Review();
+    $review->user_id = $user->id; // use authenticated user
+    $review->product_id = $request->input('product_id');
+    $review->rating = $request->input('rating');
+    $review->comment = $request->input('comment');
+    $review->save();
+
+    return response()->json([
+        'success' => true,
+        'data'    => $review,
+    ]);
+}
+
     /**
-     * Show a specific review by ID.
+     * Show a specific review.
      */
     public function show($id)
     {
@@ -58,7 +72,7 @@ class ReviewController extends Controller
         return response()->json([
             'success' => true,
             'data'    => $review,
-        ]); 
+        ]);
     }
 
     /**
@@ -66,24 +80,39 @@ class ReviewController extends Controller
      */
     public function update(Request $request, $id)
     {
+        try {
         $request->validate([
             'rating'  => 'required|integer|min:1|max:5',
             'comment' => 'nullable|string|max:255',
         ]);
 
-        $review = Review::findOrFail($id);
+        // Retrieve the review based on the provided ID
+        $review = Review::findOrFail($id);  // Ensures the review exists or returns 404
+
+        // Update fields
         $review->rating = $request->input('rating');
         $review->comment = $request->input('comment');
+
+        // Save the review - Laravel will automatically update `updated_at`
         $review->save();
 
         return response()->json([
             'success' => true,
-            'data' => $review,
+            'data'    => $review,
         ]);
+    } catch (\Exception $e) {
+        // Log the exception message for debugging purposes
+        \Log::error($e->getMessage());
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Error occurred: ' . $e->getMessage()
+        ], 500);
+    }
     }
 
     /**
-     * Delete a review by ID.
+     * Delete a review.
      */
     public function destroy($id)
     {

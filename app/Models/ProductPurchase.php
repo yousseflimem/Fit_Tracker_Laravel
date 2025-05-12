@@ -4,27 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PurchasedProduct extends Model
+class ProductPurchase extends Model
 {
     protected $fillable = [
-        'userid',
-        'productid',
-        'purchase_date',
+        'user_id',
+        'product_id',
         'quantity',
         'price_at_purchase',
         'purchase_date',
         // Any other fields you want to allow mass assignment for
     ];
-
-    // Define relationships
-    public function user()
+     public function user()
     {
-        return $this->belongsTo(User::class, 'userid');
+        return $this->belongsTo(User::class, 'user_id','id');
     }
 
     public function product()
     {
-        return $this->belongsTo(GymProduct::class, 'productid');
+        return $this->belongsTo(GymProduct::class, 'product_id');
         
     }
+    protected $casts = [
+        'purchase_date' => 'datetime',
+    ];
 }
