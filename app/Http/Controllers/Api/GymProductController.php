@@ -15,6 +15,7 @@ class GymProductController extends Controller
         return response()->json($products, 200, [], JSON_PRETTY_PRINT);
     }
 
+
     public function show($id)
     {
         // Logic to fetch and return a specific gym product by ID
@@ -35,7 +36,7 @@ class GymProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'category' => 'required|string|in:supplement,equipment,clothing',
+            'category' => 'required|string|in:Supplement,Accessory,Clothing',
             'stock' => 'required|integer|min:0'
         ]);
 

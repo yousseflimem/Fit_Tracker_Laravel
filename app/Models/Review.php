@@ -6,16 +6,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
+    // Define custom timestamps
+    const UPDATED_AT = 'updatedAt';
+    const CREATED_AT = 'createdAt';
+
+    // Disable automatic timestamps if you're using custom ones
+    public $timestamps = true;
+
+    // Define which columns are mass-assignable
     protected $fillable = [
-        'userid', 'productId', 'rating', 'comment', 'createdAt'
+        'userid', 'productId', 'rating', 'comment', 'createdAt', 'updatedAt'
     ];
+
+    // Relationship to User
     public function user()
     {
-        return $this->belongsTo(User::class, 'userid', 'userid');
+        // Define the foreign key in the 'reviews' table (userid) and the local key in 'users' table (id)
+        return $this->belongsTo(User::class, 'userid', 'id');
     }
 
+    // Relationship to GymProduct
     public function product()
     {
-        return $this->belongsTo(GymProduct::class, 'productId', 'productId');
+        // Define the foreign key in the 'reviews' table (productId) and the local key in 'gym_products' table (id)
+        return $this->belongsTo(GymProduct::class, 'productId', 'id');
     }
 }

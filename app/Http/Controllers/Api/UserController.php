@@ -7,62 +7,37 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use App\Models\ProductPurchase;
+use App\Models\GymProduct;
+use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
+/**
+ * Handle user login
+ *
+ * @param Request $request
+ * @return \Illuminate\Http\JsonResponse
+ */
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            return response()->json([
-                'message' => 'Login successful',
-                'user' => $user,
-            ]);
-        }
-
-        return response()->json(['message' => 'Invalid credentials'], 401);
-    }
     public function index()
     {
         $users = User::all();
-         return response()->json($users, 200, [], JSON_PRETTY_PRINT);
+        return response()->json($users, 200, [], JSON_PRETTY_PRINT);
     }
+    public function logout(Request $request)
+    {
+                return response()->json(['message' => 'Logged out (fake logout - no auth used)']);
 
+    }
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-         if (User::where('email', $request->email)->exists()) {
-        return response()->json([
-            'message' => 'Email already exists'
-        ], 409); // 409 Conflict
-    }
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
-            'role' => ['nullable', Rule::in(['Admin', 'User'])], // Optional role field
-        ]);
-        
-
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => $validated['role'] ?? 'User', // Default to 'User' if not provided
-        ]);
-
-        return response()->json([
-            'message' => 'User created successfully',
-            'user' => $user,
-        ], 201);
-    }
+    
 
     /**
      * Display the specified resource.
@@ -111,22 +86,79 @@ class UserController extends Controller
             'message' => 'User deleted successfully',
         ]);
     }
-     public function purchaseProduct(Request $request, $productId)
-    {
-        $user = auth()->user();
-        $product = GymProduct::findOrFail($productId);
 
-        // Create purchase record (assuming you have a product_purchases table)
-        $purchase = $user->productPurchases()->create([
-            'product_id' => $productId,
+    
+public function purchaseProduct(Request $request, $productId)
+{
+    // Retrieve the token from the Authorization header
+    $token = $request->bearerToken();
+    \Log::info('Received Token: ' . $token);
+
+    // Check if token is present
+    if (!$token) {
+        return response()->json(['error' => 'User not authenticated'], 401);
+    }
+
+    // Verify token using Sanctum
+    $accessToken = \Laravel\Sanctum\PersonalAccessToken::findToken($token);
+    $user = $accessToken ? $accessToken->tokenable : null;
+
+    // If no user is found or the token is invalid
+    if (!$user) {
+        return response()->json(['error' => 'Invalid token'], 401);
+    }
+
+    try {
+        // Validate the input
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        // Find the product and validate the price
+        $product = GymProduct::findOrFail($productId);
+        if (!isset($product->price) || !is_numeric($product->price)) {
+            \Log::error('Invalid product price', ['product_id' => $productId, 'price' => $product->price]);
+            return response()->json(['error' => 'Invalid product price'], 400);
+        }
+
+        // Create the purchase record
+        $purchase = ProductPurchase::create([
+            'userid' => $user->id,
+            'productid' => $product->id,
+            'quantity' => $request->input('quantity'),
+            'price_at_purchase' => $product->price,
             'purchase_date' => now(),
-            // Add any other relevant purchase fields
         ]);
 
         return response()->json([
             'message' => 'Product purchased successfully',
             'purchase' => $purchase,
-            'product' => $product
-        ]);
+        ], 201);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json(['error' => 'Product not found'], 404);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json(['error' => 'Validation failed', 'messages' => $e->errors()], 422);
+    } catch (\Exception $e) {
+        \Log::error('Unexpected error', ['error' => $e->getMessage()]);
+        return response()->json(['error' => 'Server error', 'message' => $e->getMessage()], 500);
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+       
+
 }?>

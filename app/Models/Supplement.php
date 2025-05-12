@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Supplement extends Model
 {
     protected $fillable = [
-        'name', 'price', 'description'
+        'productId','flavor', 'weight', 'form'
     ];
+     public $timestamps = false;
     public function product()
     {
-        return $this->belongsTo(GymProduct::class, 'productId', 'productId');
+        return $this->belongsTo(GymProduct::class, 'productId');
     }
 }

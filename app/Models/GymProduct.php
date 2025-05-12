@@ -7,25 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 class GymProduct extends Model
 {
     protected $fillable = [
-        'id', 'name', 'description', 'price', 'category', 'stock'
+         'name', 'description', 'price', 'category', 'stock'
     ];
      public function supplement()
     {
-        return $this->hasOne(Supplement::class, 'productId', 'productId');
+        return $this->hasOne(Supplement::class, 'productId');
     }
 
     public function clothing()
     {
-        return $this->hasOne(Clothing::class, 'productId', 'productId');
+        return $this->hasOne(Clothing::class, 'productId');
     }
 
     public function accessory()
     {
-        return $this->hasOne(Accessory::class, 'productId', 'productId');
+        return $this->hasOne(Accessory::class, 'productId');
     }
 
     public function reviews()
     {
-        return $this->hasMany(Review::class, 'productId', 'productId');
+        return $this->hasMany(Review::class, 'productId');
     }
+    public function productable()
+    {
+        return $this->morphTo();
+    }
+     
 }
