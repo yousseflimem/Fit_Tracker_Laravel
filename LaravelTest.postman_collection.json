@@ -1121,6 +1121,14 @@
 					"response": []
 				},
 				{
+					"name": "all_users Copy",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
 					"name": "update_user",
 					"request": {
 						"method": "PUT",
@@ -1183,13 +1191,13 @@
 					"response": []
 				},
 				{
-					"name": "User_count",
+					"name": "add_user",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"User\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Alice Johnson\",\r\n    \"email\": \"alice@example.com\",\r\n    \"password\": \"secret123\",\r\n    \"role\": \"User\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1197,7 +1205,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/admin/users/2",
+							"raw": "http://localhost:8000/api/admin/users",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1206,8 +1214,7 @@
 							"path": [
 								"api",
 								"admin",
-								"users",
-								"2"
+								"users"
 							]
 						}
 					},
@@ -1342,11 +1349,11 @@
 				{
 					"name": "admin_ModiferProduct",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Yoga Mat\",\r\n    \"description\": \"Non-slip surface\",\r\n    \"price\": 39.99,\r\n    \"stock\": 30,\r\n    \"category\": \"accessory\",\r\n    \"accessory_size\": \"68x24 inches\",\r\n    \"material\": \"Rubber\",\r\n    \"brand\": \"GymPro\",\r\n    \"accessory_weight\": 1.8\r\n}",
+							"raw": "{\r\n    \"price_at_purchase\": \"40\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1365,6 +1372,164 @@
 								"admin",
 								"purchases",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin_ModiferProductPurchase",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\":1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/purchases/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"purchases",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin_getAllPurchases Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\":1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/purchases",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"purchases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin_getAllReview",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\":1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/purchases",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"purchases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin_UpdateReview",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/reviews/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"reviews",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin_DeleteReview",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/admin/reviews/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"reviews",
+								"3"
 							]
 						}
 					},
