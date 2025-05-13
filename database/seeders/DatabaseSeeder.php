@@ -3,9 +3,16 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Review;
+use App\Models\MembershipType;
+use App\Models\Membership;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
+use App\Models\Supplement;
+use App\Models\GymProduct;
+use App\Models\Clothing;
+use App\Models\Accessory;
+use App\Models\ProductPurchase;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,9 +22,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+        UserSeeder::class,
+        ReviewSeeder::class,
+        MembershipTypeSeeder::class,
+        MembershipSeeder::class,
+        SupplementSeeder::class,
+        GymProductSeeder::class,
+        ClothingSeeder::class,
+        AccessorySeeder::class,
+        ProductPurchaseSeeder::class,
         ]);
     }
 }

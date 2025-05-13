@@ -20,23 +20,31 @@
     Route::post('/lookForProduct', [UserController::class, 'lookForProduct']);
 
 
-     Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->group(function () {
     // User Management
-    Route::get('/users', [AdminController::class, 'listUsers']);
-    Route::put('/users/{id}', [AdminController::class, 'updateUser']);
-    Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
-    
-    // Product Management
-    Route::post('/products', [AdminController::class, 'createProduct']);
-    Route::put('/products/{id}', [AdminController::class, 'updateProduct']);
-    Route::delete('/products/{id}', [AdminController::class, 'deleteProduct']);
-    // Route::get('/products/stats', [AdminController::class, 'productStatistics']);
-    // Route::get('/users/count', [AdminController::class, 'countUsers']);
-    Route::get('/products/all', [AdminController::class, 'listAllProducts']);
-    Route::put('/purchases/{purchaseId}', [AdminController::class, 'modifyPurchase']);
+        Route::get('/users', [AdminController::class, 'listUsers']);
+        Route::post('/users', [AdminController::class, 'addUser']);
+        Route::put('/users/{id}', [AdminController::class, 'updateUser']);
+        Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
+        
+        // Product Management
+        Route::post('/products', [AdminController::class, 'createProduct']);
+        Route::put('/products/{id}', [AdminController::class, 'updateProduct']);
+        Route::delete('/products/{id}', [AdminController::class, 'deleteProduct']);
+        // Route::get('/products/stats', [AdminController::class, 'productStatistics']);
+        // Route::get('/users/count', [AdminController::class, 'countUsers']);
+        Route::get('/products/all', [AdminController::class, 'listAllProducts']);
+        Route::put('/purchases/{purchaseId}', [AdminController::class, 'modifyPurchase']);
+        Route::get('/purchases', [AdminController::class, 'getAllPurchases']);
+
+        Route::get('/reviews', [AdminController::class, 'getAllReviews']);
+         Route::put('/reviews/{reviewId}', [AdminController::class, 'updateReview']);
+        Route::delete('/reviews/{reviewId}', [AdminController::class, 'deleteReview']);
+
     });
 
-    Route::apiResource('users', UserController::class);
+    Route::apiResource('user-actions', UserController::class); // custom name to avoid conflict
+
  
     Route::apiResource('GymProduct', GymProductController::class);
     Route::post('/purchaseProduct/{productId}', [UserController::class, 'purchaseProduct']);

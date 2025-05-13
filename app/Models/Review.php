@@ -13,20 +13,20 @@ class Review extends Model
 
     // Define which columns are mass-assignable
     protected $fillable = [
-        'userid', 'productId', 'rating', 'comment', 'createdAt', 'updatedAt'
+        'user_id', 'product_Id', 'rating', 'comment'
     ];
 
     // Relationship to User
     public function user()
     {
         // Define the foreign key in the 'reviews' table (userid) and the local key in 'users' table (id)
-        return $this->belongsTo(User::class, 'userid');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     // Relationship to GymProduct
     public function product()
     {
         // Define the foreign key in the 'reviews' table (productId) and the local key in 'gym_products' table (id)
-        return $this->belongsTo(GymProduct::class, 'productId', 'id');
+        return $this->belongsTo(GymProduct::class, 'product_Id');
     }
 }

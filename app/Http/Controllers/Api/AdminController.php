@@ -12,7 +12,7 @@ use App\Models\ProductPurchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Review;
 class AdminController extends Controller
 {
     /**
@@ -30,23 +30,44 @@ class AdminController extends Controller
     }
 
     /**
-     * Get total user count
+     * Add a new user
      */
-    // public function countUsers()
-    // {
-    //     $totalUsers = User::count();
-    //     $activeUsers = User::where('status', 'active')->count();
-    //     $adminUsers = User::where('role', 'Admin')->count();
+    public function addUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'role' => 'required|in:Admin,User',
+        ]);
 
-    //     return response()->json([
-    //         'success' => true,
-    //         'data' => [
-    //             'total_users' => $totalUsers,
-    //             'active_users' => $activeUsers,
-    //             'admin_users' => $adminUsers
-    //         ]
-    //     ]);
-    // }
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role' => $request->role,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => $user
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create user',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
     /**
      * List all products with pagination
@@ -62,6 +83,91 @@ class AdminController extends Controller
             'data' => $products
         ]);
     }
+
+    public function updateReview(Request $request, $reviewId)
+    {
+        $review = Review::find($reviewId);
+        
+        if (!$review) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Review not found'
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'rating' => 'sometimes|integer|min:1|max:5',
+            'comment' => 'sometimes|string|max:500',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $review->update($request->only(['rating', 'comment']));
+
+            return response()->json([
+                'success' => true,
+                'data' => $review
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update review',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getAllReviews(Request $request)
+    {
+        $perPage = $request->input('per_page', 10); // Default to 10 reviews per page
+        try {
+            $reviews = Review::paginate($perPage); // Retrieve all reviews with pagination
+
+            return response()->json([
+                'success' => true,
+                'data' => $reviews
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve reviews',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function deleteReview($reviewId)
+    {
+        $review = Review::find($reviewId);
+        
+        if (!$review) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Review not found'
+            ], 404);
+        }
+
+        try {
+            $review->delete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Review deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete review',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 
     /**
      * Create any type of product
@@ -263,37 +369,7 @@ class AdminController extends Controller
         }
     }
 
-    /**
-     * Get product statistics (without stock status)
-     */
-    public function productStatistics()
-    {
-        $stats = [
-            'total_products' => GymProduct::count(),
-            'total_value' => GymProduct::sum('price'),
-            'total_stock' => GymProduct::sum('stock'),
-        ];
-
-        $categories = ['supplement', 'clothing', 'accessory'];
-        foreach ($categories as $category) {
-            $stats['categories'][$category] = [
-                'count' => GymProduct::where('category', $category)->count(),
-                'value' => GymProduct::where('category', $category)->sum('price'),
-                'stock' => GymProduct::where('category', $category)->sum('stock'),
-                'avg_price' => GymProduct::where('category', $category)->avg('price')
-            ];
-        }
-
-        $stats['top_products'] = GymProduct::orderBy('price', 'desc')
-            ->take(5)
-            ->get(['id', 'name', 'price', 'category']);
-
-        return response()->json([
-            'success' => true,
-            'data' => $stats
-        ]);
-    }
-
+  
     /**
      * Modify a purchase
      */
@@ -331,6 +407,24 @@ class AdminController extends Controller
             ], 500);
         }
     }
+    public function getAllPurchases()
+    {
+            try {
+                $purchases = ProductPurchase::all();  // Fetch all purchases from the database
+
+                return response()->json([
+                    'success' => true,
+                    'data' => $purchases
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to retrieve purchases',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+        }
+
 
     /**
      * Update user details

@@ -19,7 +19,6 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    const CREATED_AT = 'createrat';
     protected $fillable = [
         'name',
         'email',
