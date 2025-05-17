@@ -25,7 +25,7 @@
     Route::get('/users', [AdminController::class, 'listUsers']);
     Route::put('/users/{id}', [AdminController::class, 'updateUser']);
     Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
-    
+
     // Product Management
     Route::post('/products', [AdminController::class, 'createProduct']);
     Route::put('/products/{id}', [AdminController::class, 'updateProduct']);
@@ -36,8 +36,11 @@
     Route::put('/purchases/{purchaseId}', [AdminController::class, 'modifyPurchase']);
     });
 
-    Route::apiResource('users', UserController::class);
- 
+    Route::apiResource('user', UserController::class);
+    Route::get('/user/{id}', [UserController::class, 'show']);
+    Route::put('/user/{id}', [UserController::class, 'update']);
+    Route::delete('/user/{id}', [UserController::class, 'destroy']);
+    
     Route::apiResource('GymProduct', GymProductController::class);
     Route::post('/purchaseProduct/{productId}', [UserController::class, 'purchaseProduct']);
    
@@ -52,6 +55,7 @@
 
     Route::apiResource('reviews', ReviewController::class); // Added route for reviews    
 
+    Route::middleware('auth:sanctum')->put('/user', [UserController::class, 'update']);
 
 
 

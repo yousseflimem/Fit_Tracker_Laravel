@@ -2381,7 +2381,7 @@
                 "ext-json": "*",
                 "ext-openssl": "*",
                 "lcobucci/clock": "^2.3 || ^3.0",
-                "lcobucci/jwt": "^5.0",
+                "lcobucci/jwt": "^5.5.0",
                 "league/event": "^3.0",
                 "league/uri": "^7.0",
                 "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",

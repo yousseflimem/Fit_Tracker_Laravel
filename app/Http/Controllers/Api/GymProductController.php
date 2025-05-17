@@ -17,18 +17,19 @@ class GymProductController extends Controller
 
 
     public function show($id)
-    {
-        // Logic to fetch and return a specific gym product by ID
-         $product = GymProduct::find($id);
+{
+    $product = GymProduct::with([
+        'supplement',
+        'clothing',
+        'accessory'
+    ])->find($id);
 
-        if (!$product) {
-            return response()->json([
-                'message' => 'Product not found'
-            ], 404);
-        }
-
-        return response()->json($product, 200, [], JSON_PRETTY_PRINT);
+    if (!$product) {
+        return response()->json(['message' => 'Product not found'], 404);
     }
+
+    return response()->json($product);
+}
 
     public function store(Request $request)
      {
