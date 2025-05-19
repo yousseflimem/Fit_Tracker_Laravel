@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class GymProduct extends Model
 {
     protected $fillable = [
-         'name', 'description', 'price', 'category', 'stock'
+         'name', 'description', 'price', 'category', 'stock','imgURL'
     ];
      public function supplement()
     {
